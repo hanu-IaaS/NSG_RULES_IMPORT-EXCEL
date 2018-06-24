@@ -10,7 +10,7 @@ Install-Module -Name ImportExcel -RequiredVersion 4.0.8 -Force -WarningAction Si
 
 $rg_name   = "NSG"
 $location  = "eastus"
-$ExcelFile = "C:\tfa\my_NSG.xlsx"
+$ExcelFile = "https://raw.githubusercontent.com/hanu-IaaS/NSG_RULES_IMPORT-EXCEL/NSG-Rules-v0.2.xlsx"
 
 # NSG name array
 $nsg_name = @("NSG1","NSG2","NSG3")
@@ -41,5 +41,5 @@ Write-Host "Importing NSG rules for" $NSGs[$n].Name -ForegroundColor Green
 $Rule = Import-Excel -Path $ExcelFile -WorksheetName $subnets[$n].Name
 Write-Host "Adding rules to" $NSGs[$n].Name "for Subnet" $subnets[$n].Name -ForegroundColor Green
 for($r=0; $r -lt $Rule.Length; $r++) {
-Add-AzureRmNetworkSecurityRuleConfig -Name $Rule[$r].ruleName  -NetworkSecurityGroup $NSGs[$n] -Protocol $Rule[$r].protocol -SourcePortRange $Rule[$r].sourcePort -DestinationPortRange $Rule[$r].destinationPort -SourceAddressPrefix $Rule[$r].sourcePrefix -DestinationAddressPrefix $Rule[$r].destinationPrefix -Access $Rule[$r].access -Priority $Rule[$r].priority -Direction $Rule[$r].direction | Set-AzureRmNetworkSecurityGroup 
+Add-AzureRmNetworkSecurityRuleConfig -Name $Rule[$r].ruleName  -NetworkSecurityGroup $NSGs[$n] -Protocol $Rule[$r].protocol -SourcePortRange $Rule[$r].sourcePort -DestinationPortRange $Rule[$r].destinationPort -SourceAddressPrefix $Rule[$r].sourcePrefix -DestinationAddressPrefix $Rule[$r].destinationPrefix -Access $Rule[$r].access -Priority $Rule[$r].priority -Direction $Rule[$r].direction -Description $Rule[$r].description | Set-AzureRmNetworkSecurityGroup 
 }}
